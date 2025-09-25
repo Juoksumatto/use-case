@@ -1,4 +1,4 @@
-- Käyttäjä
-    - Käyttäjä pystyy näkemään äännestyksiä jotka muut ovat tehneet.
-    - Käyttäjä pystyy valitsemaan ja katsomaan äännestyksiä.
+- Kayttaja
+    - Kayttaja pystyy nakemaan aannestyksia jotka muut ovat tehneet.
+    - Kayttaja pystyy valitsemaan ja katsomaan aannestyksia.
     - 
