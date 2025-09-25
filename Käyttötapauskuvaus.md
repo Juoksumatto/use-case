@@ -1,0 +1,4 @@
+- Käyttäjä
+    - Käyttäjä pystyy näkemään äännestyksiä jotka muut ovat tehneet.
+    - Käyttäjä pystyy valitsemaan ja katsomaan äännestyksiä.
+    - 
