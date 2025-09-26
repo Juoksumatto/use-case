@@ -3,9 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Äännestys sivu</title>
 </head>
 <body>
-    <button type="button"></button>
+    <h1>Äännestys sivu.</h1>
+    <button onclick="Luoäännestys()" class="button" id="luo" >Luo äännestys</button>
+    <button onclick="Poistaäännestys()" class="button" id="poista" >Poista äännestys</button>
+    <button onclick="Ännestykset()" class="button" id="äänestykset" >Näytä äännestykset</button>
+
+<script>
+    function Luoäännestys() {
+        var salasana = prompt("Anna salasana:");
+        if (salasana === "ylläpitäjä123") {
+            var kysymys = prompt("Anna äännestyskysymys:");
+            var kuinkamonta = prompt("Kuinka monta vaihtoehtoa:")
+                if (kuinkamonta < 2 || isNaN(kuinkamonta)) {
+                    alert("Anna numero, joka on suurempi kuin 1.")
+                    return;
+                } else {
+                    var vaihtoehdot = [];
+                    for (var i = 0; i < kuinkamonta; i++) {
+                        var vaihtoehto = prompt("Anna vaihtoehto " + (i + 1) + ":");
+                        vaihtoehdot.push(vaihtoehto);
+                        
+                    }
+                    var äännestys = {
+                        kysymys: kysymys,
+                        vaihtoehdot: vaihtoehdot    
+                    };
+                    
+                    var kaikkiÄänestykset = JSON.parse(localStorage.getItem("äänestykset")) || [];
+                    kaikkiÄänestykset.push(äännestys);
+                    localStorage.setItem("äänestykset", JSON.stringify(kaikkiÄänestykset));
+                    alert("Äännestys luotu.");
+                }    
+               
+        }else{
+            alert("Väärä salasana.");
+        }
+        }
+        
+    function Poistaäännestys() {
+        var salasana = prompt("Anna salasana:");
+        if (salasana === "ylläpitäjä123") {
+            var kysymys = prompt("Anna poistettavan äännestyksen nimi:")
+            var kaikkiÄänestykset = JSON.parse(localStorage.getItem("äänestykset")) || [];
+            var Uudetäännestykset = kaikkiÄänestykset.filter(function(äänestys) {
+            });
+            localStorage.setItem("äänestykset", JSON.stringify(Uudetäännestykset));
+            alert("Äännestys poistettu.");
+        } else {
+            älert("Väärä salasana.");
+        }
+    }
+    function äänestykset() {
+        var äänestykset = JSON.parse(localStorage.getItem("äänestykset")) || [];
+        if (äänestykset.length === 0) {
+            alert("Ei äänestyksiä.");
+            return;
+        }
+        var viesti = "";
+        kaikkiÄänestykset.forEach(function(äänestys, index) {
+            viesti += (index + 1) + ". " + äänestys.kysymys + "\n";
+            äänestys.vaihtoehdot.forEach(function(vaihtoehto, vIndex) {
+                viesti += "   " + (vIndex + 1) + ") " + vaihtoehto + "\n";
+            });
+        });
+    }
+</script>
 </body>
 </html>
