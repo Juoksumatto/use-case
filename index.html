@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Äännestys sivu</title>
+    <title>Äänestys sivu</title>
 </head>
 <body>
-    <h1>Äännestys sivu.</h1>
+    <h1>Äänestys sivu.</h1>
     <button onclick="Luoäännestys()" class="button" id="luo" >Luo äännestys</button>
     <button onclick="Poistaäännestys()" class="button" id="poista" >Poista äännestys</button>
-    <button onclick="Ännestykset()" class="button" id="äänestykset" >Näytä äännestykset</button>
-
+    <button onclick="äänestykset()" class="button" id="äänestykset" >Näytä äänestykset</button>
+    <br><br>
+    <div id="Äänestyslista" ></div>
 <script>
     function Luoäännestys() {
         var salasana = prompt("Anna salasana:");
         if (salasana === "ylläpitäjä123") {
             var kysymys = prompt("Anna äännestyskysymys:");
-            var kuinkamonta = prompt("Kuinka monta vaihtoehtoa:")
+            var kuinkamonta = prompt("Kuinka monta vaihtoehtoa:");
+                kuinkamonta = Number(kuinkamonta);
                 if (kuinkamonta < 2 || isNaN(kuinkamonta)) {
                     alert("Anna numero, joka on suurempi kuin 1.")
                     return;
@@ -36,6 +38,7 @@
                     kaikkiÄänestykset.push(äännestys);
                     localStorage.setItem("äänestykset", JSON.stringify(kaikkiÄänestykset));
                     alert("Äännestys luotu.");
+                    document.getElementById("Äänestyslista").innerHTML = "Luotu äänestys: " + kysymys;
                 }    
                
         }else{
@@ -48,28 +51,60 @@
         if (salasana === "ylläpitäjä123") {
             var kysymys = prompt("Anna poistettavan äännestyksen nimi:")
             var kaikkiÄänestykset = JSON.parse(localStorage.getItem("äänestykset")) || [];
-            var Uudetäännestykset = kaikkiÄänestykset.filter(function(äänestys) {
+            var uudetÄänestykset = kaikkiÄänestykset.filter(function(äänestys) {
+                return äänestys.kysymys !== kysymys
             });
-            localStorage.setItem("äänestykset", JSON.stringify(Uudetäännestykset));
-            alert("Äännestys poistettu.");
+            localStorage.setItem("äänestykset", JSON.stringify(uudetÄänestykset));
+            document.getElementById("Äänestyslista").innerHTML = "Poistettu äänestys: " + kysymys;
+            alert("Äänestys poistettu.");
         } else {
-            älert("Väärä salasana.");
+            alert("Väärä salasana.");
         }
     }
     function äänestykset() {
         var äänestykset = JSON.parse(localStorage.getItem("äänestykset")) || [];
+        var container = document.getElementById("Äänestyslista");
+
         if (äänestykset.length === 0) {
-            alert("Ei äänestyksiä.");
+            container.innerHTML = "Ei yhtään äänestystä.";
             return;
         }
-        var viesti = "";
-        kaikkiÄänestykset.forEach(function(äänestys, index) {
-            viesti += (index + 1) + ". " + äänestys.kysymys + "\n";
+
+        var html = "";
+        äänestykset.forEach(function(äänestys, index) {
+            html += "<h3>" + (index + 1) + ". " + äänestys.kysymys + "</h3>";
+            html += "<form id='poll-" + index + "'>";
             äänestys.vaihtoehdot.forEach(function(vaihtoehto, vIndex) {
-                viesti += "   " + (vIndex + 1) + ") " + vaihtoehto + "\n";
+                html += "<label>";
+                html += "<input type='radio' name='option-" + index + "' value='" + vIndex + "'>";
+                html += vaihtoehto + "</label><br>";
             });
+            html += "<button type='button' onclick='vote(" + index +")'Äänestä</button>";
+
+            html += "</form><hr>";
         });
+
+        container.innerHTML = html;
     }
+function vote(pollIndex) {
+    var kaikkiÄänestykset = JSON.parse(localStorage.getItem("äänestykset")) || [];
+    var poll = kaikkiÄänestykset[pollIndex];
+    var selected = document.querySelector("input[name='vote-" + pollIndex + "']:checked");
+    if (!selected) {
+        alert("Valitse vaihtoehto ennen äänestämistä!");
+        return;
+    }
+    var choice = parseInt(selected.value);
+    if (!poll.votes) {
+        poll.votes = new Array(poll.vaihtoehdot.length).fill(0);
+    }
+    poll.votes[choice]++;
+    kaikkiÄänestykset[pollIndex] = poll;
+    localStorage.setItem("äänestykset", JSON.stringify(kaikkiÄänestykset));
+
+    alert("Ääni tallennettu: " + poll.vaihtoehdot[choice]);
+}
+
 </script>
 </body>
 </html>
