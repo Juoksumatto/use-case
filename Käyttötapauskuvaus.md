@@ -7,4 +7,10 @@
     - Voi luoda äännestyksiä muiden nähtäväksi ja äännestettäväksi.
     - Voi poistaa äännestyksiä.
     - Ylläpitäjä pystyy tekemään kaiken minkä käyttäjäkin voi.
-    
+
+
+
+
+
+
+    - Ylläpitäjä salasana: ylläpitäjä123    
