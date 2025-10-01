@@ -24,7 +24,7 @@
                     alert("Anna numero, joka on suurempi kuin 1.")
                     return;
                 } else {
-                    var vaihtoehdot = [];
+                    var vaihtoehdot = [];0
                     for (var i = 0; i < kuinkamonta; i++) {
                         var vaihtoehto = prompt("Anna vaihtoehto " + (i + 1) + ":");
                         vaihtoehdot.push(vaihtoehto);
@@ -38,7 +38,6 @@
                         vaihtoehdot: vaihtoehdot,
                         votes: new Array(vaihtoehdot.length).fill(0)
                     };
-
                     
                     var kaikkiÄänestykset = JSON.parse(localStorage.getItem("äänestykset")) || [];
                     kaikkiÄänestykset.push(äännestys);
@@ -79,6 +78,7 @@
 
         var html = "";
         äänestykset.forEach(function(äänestys, index) {
+            html += "<div class='äänestys'>";
             html += "<h3>" + (index + 1) + ". " + äänestys.kysymys + "</h3>";
             html += "<form id='poll-" + index + "'>";
             äänestys.vaihtoehdot.forEach(function(vaihtoehto, vIndex) {
@@ -89,7 +89,7 @@
             });
             html += "<button type='button' class'äänestä' onclick='vote(" + index + ")'>Äänestä</button>";
 
-            html += "</form><hr>";
+            html += "</form></div><hr>";
         });
 
         container.innerHTML = html;
@@ -113,8 +113,6 @@
 
         äänestykset();
 }
-
 </script>
 </body>
 </html>
-
